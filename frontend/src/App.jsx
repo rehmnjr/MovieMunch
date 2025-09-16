@@ -1,15 +1,17 @@
 import React from 'react'
 import Navbar from './Components/Navbar'
 import Hero from './Components/HeroSection'
-import ReviewPage from './Components/Pages/ReviewPage'
+import TrendingPage from './Components/Pages/TrendingPage'
 import FullReviewPage from './Components/Pages/FullReviewPage'
+import NotFoundPage from './Components/ui/NotFoundPage'
 const App = () => {
   return (
     <div>
       <Navbar/>
       <Hero/>
-      <ReviewPage/>
+      <TrendingPage/>
       <FullReviewPage/>
+      <NotFoundPage/>
     </div>
   )
 }

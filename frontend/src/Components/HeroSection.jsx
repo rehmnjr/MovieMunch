@@ -1,5 +1,3 @@
-// components/Hero.jsx
-
 import React from 'react';
 
 const Hero = () => {
@@ -8,11 +6,11 @@ const Hero = () => {
       {/* Optional background image with overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: "url('https://www.postproductioninstitute.com/wp-content/uploads/2014/09/best-poster-designers.jpg')" }}
+        style={{ backgroundImage: "url('https://images.squarespace-cdn.com/content/v1/52d6d1ede4b0b322e9c7a2ea/1585757840597-2O3BWHS9NZJOPRKOO8ST/reddit.jpg')" }}
       ></div>
 
       {/* Overlay to darken image for text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+     <div className="absolute inset-0 bg-gradient-to-tr from-black/98 to-black/80"></div>
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 text-center">

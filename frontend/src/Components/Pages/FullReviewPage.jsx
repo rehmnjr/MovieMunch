@@ -1,7 +1,7 @@
 // pages/FullReview.jsx
 
 import React from 'react';
-import ReviewPage from './ReviewPage'
+import TrendingPage from './TrendingPage'
 const FullReviewPage = () => {
   const movie = {
     title: 'Oppenheimer',
@@ -58,7 +58,7 @@ const FullReviewPage = () => {
 
             <div className="flex items-center space-x-4 mb-4">
               <span className="bg-red-600 px-3 py-1 text-sm rounded-full">
-                ⭐ {movie.rating}/10
+                ⭐ {movie.rating} / 10
               </span>
               <span className="text-gray-400 text-sm">
                 🎬 Directed by <strong>{movie.director}</strong>
@@ -95,7 +95,7 @@ const FullReviewPage = () => {
           </div>
         </div>
       </div>
-      <ReviewPage/>
+      <TrendingPage/>
     </section>
   );
 };
