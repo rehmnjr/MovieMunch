@@ -4,14 +4,20 @@ import Hero from './Components/HeroSection'
 import TrendingPage from './Components/Pages/TrendingPage'
 import FullReviewPage from './Components/Pages/FullReviewPage'
 import NotFoundPage from './Components/ui/NotFoundPage'
+import AllMoviePage from './Components/Pages/AllMoviePage'
+import TopRatedMoviesPage from './Components/Pages/TopRatedMoviesPage'
+import Footer from './Components/Footer'
 const App = () => {
   return (
-    <div>
+    <div className='bg-black'>
       <Navbar/>
       <Hero/>
       <TrendingPage/>
       <FullReviewPage/>
-      <NotFoundPage/>
+      <TopRatedMoviesPage/>
+      <AllMoviePage/>
+      {/* <NotFoundPage/> */}
+      <Footer/>
     </div>
   )
 }

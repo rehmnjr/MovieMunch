@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import { useDispatch } from 'react-redux';
+import {setMovieById} from '../../Redux/Features/movieByIdSlice';
 const TrendingPage = () => {
   const URL = "http://localhost:3000/movies/";
   const [trendMovie, setTrendMovie] = useState([]);
@@ -8,6 +9,7 @@ const TrendingPage = () => {
   const intervalRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [timeWindow, setTimeWindow] = useState("day");
+  const dispatch = useDispatch();
 
   const genreMap = {
     28: "Action",
@@ -68,19 +70,20 @@ const TrendingPage = () => {
     setCurrentIndex(pageIndex * itemsPerPage);
   };
   const handleClick =async(ID)=>{
-    // try{
-    //   const res = await fetch(URL+ID);
-    //   const data = await res.json();
-    //   console.log(data,ID);
+
+    // for(let i=0; i<trendMovie.length; i++){
+    //   if(trendMovie[i].id === ID){
+    //     dispatch(setMovieById(trendMovie[i]));
+    //     break;
+    //   }
     // }
-    // catch(err){
-    //   console.log(`Fetching ID Movie Error`,err);
-    // }
-    for(let i=0; i<trendMovie.length; i++){
-      if(trendMovie[i].id === ID){
-        console.log(trendMovie[i]);
-        break;
-      }
+    try{
+      const res = await fetch(URL+ID);
+      const data = await res.json();
+      dispatch(setMovieById(data.movie));
+    }
+    catch(err){
+      console.log(`Fetching ID Movie Error`,err);
     }
   }
   
