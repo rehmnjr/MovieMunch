@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from 'react-redux';
-import {setMovieById} from '../../Redux/Features/movieByIdSlice';
+import { useDispatch } from "react-redux";
+import { setMovieById } from "../../Redux/Features/movieByIdSlice";
 const TrendingPage = () => {
   const URL = "http://localhost:3000/movies/";
   const [trendMovie, setTrendMovie] = useState([]);
@@ -32,14 +32,19 @@ const TrendingPage = () => {
     10752: "War",
     37: "Western",
   };
-
+  const [disableBtn, setDisableBtn] = useState(false);
   useEffect(() => {
     const fetchTrendingMovie = async () => {
       try {
-        const res = await fetch(URL+`trending/${timeWindow}`);
-        console.log(URL+`/${timeWindow}`);
+        setDisableBtn(true);
+        const res = await fetch(URL + `trending/${timeWindow}`);
+        console.log(URL + `/${timeWindow}`);
         const data = await res.json();
         setTrendMovie(data.movies);
+        setTimeout(() => {
+          setDisableBtn(false);
+        }, 2000);
+        
       } catch (err) {
         console.error("Error while fetching trending movies", err);
       }
@@ -69,36 +74,39 @@ const TrendingPage = () => {
   const goToPage = (pageIndex) => {
     setCurrentIndex(pageIndex * itemsPerPage);
   };
-  const handleClick =async(ID)=>{
-
+  const handleClick = async (ID) => {
     // for(let i=0; i<trendMovie.length; i++){
     //   if(trendMovie[i].id === ID){
     //     dispatch(setMovieById(trendMovie[i]));
     //     break;
     //   }
     // }
-    try{
-      const res = await fetch(URL+ID);
+    try {
+      const res = await fetch(URL + ID);
       const data = await res.json();
       dispatch(setMovieById(data.movie));
+    } catch (err) {
+      console.log(`Fetching ID Movie Error`, err);
     }
-    catch(err){
-      console.log(`Fetching ID Movie Error`,err);
-    }
-  }
-  
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-800 text-white pt-24 px-6 sm:px-10 lg:px-20">
       <div className="flex justify-center mb-6">
         <div className="inline-flex bg-gray-800 rounded-full p-1 border border-gray-600">
           {["day", "week"].map((option) => (
-            <button key={option} onClick={() => setTimeWindow(option)} className={`px-4 py-1 text-sm sm:text-base rounded-full transition-colors duration-300 font-medium
-          ${
-            timeWindow === option
-              ? "bg-red-500 text-white"
-              : "text-gray-300 hover:bg-gray-700"
-          }
-        `}
+            <button
+              key={option}
+              onClick={() => setTimeWindow(option)}
+              disabled={disableBtn} // ✅ Correct and clean
+              className={`px-4 py-1 text-sm sm:text-base rounded-full transition-colors duration-300 font-medium
+    ${
+      timeWindow === option
+        ? "bg-red-500 text-white"
+        : "text-gray-300 hover:bg-gray-700"
+    }
+    ${disableBtn ? "opacity-50 cursor-not-allowed" : ""}
+  `}
             >
               {option === "day" ? "Today" : "This Week"}
             </button>
@@ -122,20 +130,29 @@ const TrendingPage = () => {
           }}
         >
           {trendMovie.map((movie, index) => {
-            const isCurrent = index >= currentIndex && index < currentIndex + itemsPerPage;
+            const isCurrent =
+              index >= currentIndex && index < currentIndex + itemsPerPage;
 
-            const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : "N/A";
+            const releaseYear = movie.release_date
+              ? new Date(movie.release_date).getFullYear()
+              : "N/A";
 
-            const genres = movie.genre_ids.map((id) => genreMap[id]).filter(Boolean).join(", ");
+            const genres = movie.genre_ids
+              .map((id) => genreMap[id])
+              .filter(Boolean)
+              .join(", ");
 
             return (
               <div
                 key={index}
                 className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 cursor-pointer"
-                onClick={()=>handleClick(movie.id)}
+                onClick={() => handleClick(movie.id)}
               >
                 <div
-                  className={`bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-transform duration-300 flex flex-col h-full ${isCurrent ? "hover:scale-105" : ""}`}>
+                  className={`bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-transform duration-300 flex flex-col h-full ${
+                    isCurrent ? "hover:scale-105" : ""
+                  }`}
+                >
                   <img
                     src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                     alt={movie.title}
