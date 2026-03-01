@@ -1,10 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaFilm, FaBars, FaTimes } from 'react-icons/fa';
 
-const Navbar = () => {
+const Navbar = ({sections}) => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [query, setQuery] = useState('');
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const handleSearchQuery = (e)=>{
+    setQuery(e.target.value);
+  }
+
+  const scrollToSection=(ref)=>{
+    console.log(ref)
+    if (!ref?.current) return;
+    const yOffset = -80;
+    const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({top:y,behavior:'smooth'});
+  }
+  
+
+  useEffect(() => {
+  const timeID= setTimeout(() => {
+    console.log(query);
+  }, 800);
+
+  return () => {
+    clearTimeout(timeID); 
+  };
+}, [query]);
 
   return (
     <nav className="bg-gradient-to-r from-gray-900 via-black to-gray-800 text-white shadow-md fixed top-0 w-full z-50">
@@ -18,11 +41,11 @@ const Navbar = () => {
 
   
           <div className="hidden md:flex space-x-10">
-            <a href="#" className="hover:text-red-400 transition">Home</a>
-            <a href="#" className="hover:text-red-400 transition">Reviews</a>
-            <a href="#" className="hover:text-red-400 transition">Top Rated</a>
-            <a href="#" className="hover:text-red-400 transition">Genres</a>
-            <a href="#" className="hover:text-red-400 transition">About</a>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.heroRef)}>Home</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.trendingRef)}>Trending</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.topRatedRef)}>Top Rated</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.allMovieRef)}>All Movies</button>
+            <button className="hover:text-red-400 transition">About</button>
           </div>
 
 
@@ -31,6 +54,7 @@ const Navbar = () => {
               type="text"
               placeholder="Search movies..."
               className="px-3 py-1 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring focus:ring-red-400 text-sm"
+              onChange={handleSearchQuery}
             />
           </div>
 
@@ -45,15 +69,16 @@ const Navbar = () => {
 
       {menuOpen && (
         <div className="md:hidden px-4 pt-2 pb-4 space-y-2 bg-black bg-opacity-90 text-sm">
-          <a href="#" className="block hover:text-red-400">Home</a>
-          <a href="#" className="block hover:text-red-400">Reviews</a>
-          <a href="#" className="block hover:text-red-400">Top Rated</a>
-          <a href="#" className="block hover:text-red-400">Genres</a>
-          <a href="#" className="block hover:text-red-400">About</a>
+           <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.heroRef)}>Home</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.trendingRef)}>Trending</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.topRatedRef)}>Top Rated</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.allMovieRef)}>All Movies</button>
+            <button className="hover:text-red-400 transition" onClick={()=>scrollToSection(sections.trendingRef)}>About</button>
           <input
             type="text"
             placeholder="Search movies..."
             className="w-full mt-2 px-3 py-1 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring focus:ring-red-400"
+            onChange={handleSearchQuery}
           />
         </div>
       )}

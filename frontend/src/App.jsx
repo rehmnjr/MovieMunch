@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Navbar from './Components/Navbar'
 import Hero from './Components/HeroSection'
 import TrendingPage from './Components/Pages/TrendingPage'
@@ -8,14 +8,19 @@ import AllMoviePage from './Components/Pages/AllMoviePage'
 import TopRatedMoviesPage from './Components/Pages/TopRatedMoviesPage'
 import Footer from './Components/Footer'
 const App = () => {
+ 
+  const heroRef = useRef(null);
+  const trendingRef = useRef(null);
+  const allMoviesRef = useRef(null);
+  const topRatedRef = useRef(null);
   return (
     <div className='bg-black'>
-      <Navbar/>
-      <Hero/>
-      <TrendingPage/>
+      <Navbar sections={{ heroRef, trendingRef, allMoviesRef,topRatedRef }} />
+      <div ref={heroRef}><Hero/></div>
+     <div ref={trendingRef}> <TrendingPage/></div>
       <FullReviewPage/>
-      <TopRatedMoviesPage/>
-      <AllMoviePage/>
+      <div ref={topRatedRef}><TopRatedMoviesPage/></div>
+      <div ref={allMoviesRef}><AllMoviePage/></div>
       {/* <NotFoundPage/> */}
       <Footer/>
     </div>

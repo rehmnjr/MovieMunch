@@ -32,6 +32,7 @@ const TrendingPage = () => {
     10752: "War",
     37: "Western",
   };
+
   const [disableBtn, setDisableBtn] = useState(false);
   useEffect(() => {
     const fetchTrendingMovie = async () => {
@@ -74,23 +75,18 @@ const TrendingPage = () => {
   const goToPage = (pageIndex) => {
     setCurrentIndex(pageIndex * itemsPerPage);
   };
+
+
   const handleClick = async (ID) => {
-    console.log(ID)
-    for(let i=0; i<trendMovie.length; i++){
-      if(trendMovie[i].id === ID){
-        console.log(trendMovie[i]);
-        dispatch(setMovieById(trendMovie[i]));
-        break;
-      }
-    }
-    try {
-      const res = await fetch(URL + ID);
-      const data = await res.json();
-      dispatch(setMovieById(data.movie));
-    } catch (err) {
-      console.log(`Fetching ID Movie Error`, err);
-    }
-  };
+  try {
+    const res = await fetch(URL + ID);
+    const data = await res.json();
+    console.log(data.movie);
+    dispatch(setMovieById(data.movie)); 
+  } catch (err) {
+    console.log(`Fetching ID Movie Error`, err);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-800 text-white pt-24 px-6 sm:px-10 lg:px-20">
@@ -121,7 +117,7 @@ const TrendingPage = () => {
       </h2>
 
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden m-7"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -133,9 +129,9 @@ const TrendingPage = () => {
         >
           {trendMovie.map((movie, index) => {
             const isCurrent = index >= currentIndex && index < currentIndex + itemsPerPage;
-
+            
             const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : "N/A";
-
+      
             const genres = movie.genre_ids.map((id) => genreMap[id]).filter(Boolean).join(", ");
 
             return (
@@ -165,7 +161,7 @@ const TrendingPage = () => {
 
                     <div className="flex justify-between items-center mt-auto">
                       <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                        ⭐ {movie.vote_average.toFixed(1)} / 10
+                        ⭐ {Math.trunc(movie.vote_average*10)/10} / 10
                       </span>
                     </div>
                   </div>

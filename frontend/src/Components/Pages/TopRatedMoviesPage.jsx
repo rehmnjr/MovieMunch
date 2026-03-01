@@ -110,7 +110,7 @@ const TopRatedMoviesPage = () => {
 
                     <div className="flex justify-between items-center mt-2 text-sm">
                       <span className="text-red-500 font-semibold">
-                        ⭐ {movie.vote_average.toFixed(1)}
+                        ⭐ {Math.trunc(movie.vote_average*10)/10}
                       </span>
                       <span className="text-gray-400 text-xs">
                         {movie.release_date}

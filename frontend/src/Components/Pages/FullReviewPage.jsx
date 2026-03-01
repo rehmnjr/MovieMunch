@@ -4,7 +4,7 @@ import TrendingPage from "./TrendingPage";
 
 const FullReviewPage = () => {
   const movie = useSelector((state) => state.MovieById);
-
+  const MonthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Dec'];
   const genreMap = {
     28: "Action",
     12: "Adventure",
@@ -35,10 +35,19 @@ const FullReviewPage = () => {
     );
   }
 
+  const releaseDate = movie?.release_date
+  ? new Date(movie.release_date)
+  : null;
+
+const ReleaseDay = releaseDate?.getDate();
+const ReleaseMonth = releaseDate?.getMonth();
+const ReleaseYear = releaseDate?.getFullYear();
+console.log(movie.vote_average);
   return (
     <section className="bg-black text-white min-h-screen">
+    
       <div
-        className="h-72 sm:h-96 bg-cover bg-center relative bg-amber-500 p-4"
+        className="h-72 sm:h-96 bg-cover bg-center relative bg-red-500 p-4"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
         }}
@@ -67,7 +76,7 @@ const FullReviewPage = () => {
 
             <div className="flex items-center space-x-4 mb-4">
               <span className="bg-red-600 px-3 py-1 text-sm rounded-full">
-                {movie.vote_average.toFixed(1)} / 10
+              {Math.trunc(movie.vote_average*10)/10 } / 10
               </span>
               <span className="text-gray-400 text-sm">
                 🌍 Country:{" "}
@@ -78,8 +87,8 @@ const FullReviewPage = () => {
             </div>
 
             <div className="flex gap-6 mb-6 text-sm text-gray-400">
-              <p>Release: {movie.release_date}</p>
-              <p>⏱️ Duration: {movie.runtime} min</p>
+              <p>Release: {ReleaseDay} {MonthMap[ReleaseMonth]} {ReleaseYear}</p>
+              <p>⏱️ Duration: {Math.trunc((movie.runtime)/60)}:{((movie.runtime)%60)>0 && ((movie.runtime)%60)<10 ? `0${(movie.runtime)%60}`: (movie.runtime)%60} hrs</p>
             </div>
 
             <h2 className="text-2xl font-semibold mb-3">Full Overview</h2>

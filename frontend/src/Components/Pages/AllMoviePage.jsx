@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const genreMap = {
   28: 'Action',
@@ -27,7 +27,7 @@ const AllMoviePage = () => {
   const [allMovies, setAllMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-
+  const sectionRef = useRef(null); 
   const moviesPerPage = 20;
 
   useEffect(() => {
@@ -53,11 +53,11 @@ const AllMoviePage = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <div className="bg-black min-h-screen text-white px-6 sm:px-12 py-12">
+    <div ref={sectionRef}  className="bg-black min-h-screen text-white px-6 sm:px-12 py-12">
       <h1 className="text-4xl font-bold mb-8 text-red-500 text-center">All Movies</h1>
 
       {loading ? (
@@ -86,7 +86,7 @@ const AllMoviePage = () => {
                   </p>
                   <div className="flex justify-between items-center mt-2 text-sm">
                     <span className="text-red-500 font-semibold">
-                      ⭐ {movie.vote_average.toFixed(1)}
+                      ⭐ {Math.trunc(movie.vote_average*10)/10}
                     </span>
                     <span className="text-gray-400">{movie.release_date}</span>
                   </div>
